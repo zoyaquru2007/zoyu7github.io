@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zoya K — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Mulish:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080c10;
+  --surface: #0f1620;
+  --card: #131d2b;
+  --accent: #00c9a7;
+  --accent2: #ff6f61;
+  --text: #e2eaf4;
+  --muted: #5d7896;
+  --border: #1a2a3a;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; scroll-behavior:smooth; }
+
+body {
+  font-family: 'Mulish', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* Noise overlay */
+body::before {
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;
+  z-index:0;
+  opacity:0.5;
+}
+
+/* NAV */
+nav {
+  position:fixed;
+  top:0; left:0; right:0;
+  z-index:100;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:1.2rem 4rem;
+  background: rgba(8,12,16,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-family:'Bebas Neue', sans-serif;
+  font-size:1.5rem;
+  letter-spacing:0.08em;
+  color: var(--accent);
+}
+
+.nav-links {
+  display:flex;
+  gap:2rem;
+  list-style:none;
+}
+
+.nav-links a {
+  color: var(--muted);
+  text-decoration:none;
+  font-size:0.85rem;
+  font-weight:600;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover { color: var(--accent); }
+
+/* HERO */
+.hero {
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding: 8rem 4rem 4rem;
+  position:relative;
+  z-index:1;
+}
+
+.hero-tag {
+  font-family:'JetBrains Mono', monospace;
+  font-size:0.78rem;
+  color: var(--accent);
+  letter-spacing:0.15em;
+  margin-bottom:1.2rem;
+  opacity:0;
+  animation: fadeUp 0.6s 0.2s ease forwards;
+}
+
+.hero h1 {
+  font-family:'Bebas Neue', sans-serif;
+  font-size: clamp(4rem, 12vw, 9rem);
+  line-height:0.92;
+  letter-spacing:0.02em;
+  opacity:0;
+  animation: fadeUp 0.7s 0.35s ease forwards;
+}
+
+.hero h1 .outline {
+  -webkit-text-stroke: 2px var(--text);
+  color: transparent;
+}
+
+.hero h1 .highlight { color: var(--accent); }
+
+.hero-sub {
+  font-size:1.05rem;
+  color: var(--muted);
+  margin-top:1.5rem;
+  max-width:480px;
+  line-height:1.7;
+  font-weight:400;
+  opacity:0;
+  animation: fadeUp 0.7s 0.5s ease forwards;
+}
+
+.hero-btns {
+  display:flex;
+  gap:1rem;
+  margin-top:2.5rem;
+  flex-wrap:wrap;
+  opacity:0;
+  animation: fadeUp 0.7s 0.65s ease forwards;
+}
+
+.btn {
+  padding:0.75rem 2rem;
+  border-radius:0.4rem;
+  font-family:'Mulish', sans-serif;
+  font-weight:700;
+  font-size:0.88rem;
+  text-decoration:none;
+  letter-spacing:0.04em;
+  transition: all 0.2s;
+  cursor:pointer;
+  border:none;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #000;
+}
+
+.btn-primary:hover { opacity:0.85; transform:translateY(-2px); }
+
+.btn-outline {
+  background: transparent;
+  border: 1.5px solid var(--border);
+  color: var(--text);
+}
+
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Floating badge */
+.hero-badge {
+  position:absolute;
+  right:4rem;
+  bottom:5rem;
+  background: var(--card);
+  border:1px solid var(--border);
+  border-radius:1rem;
+  padding:1.2rem 1.5rem;
+  opacity:0;
+  animation: fadeUp 0.7s 0.8s ease forwards;
+}
+
+.hero-badge-num {
+  font-family:'Bebas Neue', sans-serif;
+  font-size:2.2rem;
+  color: var(--accent);
+  line-height:1;
+}
+
+.hero-badge-label {
+  font-size:0.75rem;
+  color: var(--muted);
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:0.08em;
+}
+
+/* SECTIONS */
+section {
+  padding: 6rem 4rem;
+  position:relative;
+  z-index:1;
+}
+
+.section-header {
+  display:flex;
+  align-items:center;
+  gap:1rem;
+  margin-bottom:3rem;
+}
+
+.section-num {
+  font-family:'JetBrains Mono', monospace;
+  font-size:0.7rem;
+  color: var(--accent);
+  letter-spacing:0.15em;
+}
+
+.section-title {
+  font-family:'Bebas Neue', sans-serif;
+  font-size:2.8rem;
+  letter-spacing:0.04em;
+  line-height:1;
+}
+
+.section-line {
+  flex:1;
+  height:1px;
+  background: var(--border);
+}
+
+/* ABOUT */
+.about-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:3rem;
+  align-items:start;
+}
+
+.about-text p {
+  color: #7a9ab8;
+  font-size:0.95rem;
+  line-height:1.85;
+  margin-bottom:1rem;
+  font-weight:400;
+}
+
+.about-text p strong { color: var(--text); }
+
+.info-list {
+  display:flex;
+  flex-direction:column;
+  gap:0.8rem;
+  margin-top:1.5rem;
+}
+
+.info-item {
+  display:flex;
+  gap:1rem;
+  font-size:0.85rem;
+}
+
+.info-label {
+  color: var(--accent);
+  font-family:'JetBrains Mono', monospace;
+  font-size:0.72rem;
+  min-width:80px;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  margin-top:2px;
+}
+
+.info-val { color: var(--text); font-weight:600; }
+
+/* SKILLS */
+.skills-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(140px, 1fr));
+  gap:1rem;
+}
+
+.skill-card {
+  background: var(--card);
+  border:1px solid var(--border);
+  border-radius:0.8rem;
+  padding:1.2rem 1rem;
+  text-align:center;
+  transition: all 0.25s;
+  cursor:default;
+}
+
+.skill-card:hover {
+  border-color: var(--accent);
+  transform:translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,201,167,0.1);
+}
+
+.skill-icon { font-size:1.8rem; margin-bottom:0.5rem; }
+
+.skill-name {
+  font-size:0.82rem;
+  font-weight:700;
+  letter-spacing:0.04em;
+}
+
+.skill-level {
+  font-family:'JetBrains Mono', monospace;
+  font-size:0.65rem;
+  color: var(--muted);
+  margin-top:0.2rem;
+}
+
+/* EXPERIENCE */
+.exp-list {
+  display:flex;
+  flex-direction:column;
+  gap:1.5rem;
+}
+
+.exp-card {
+  background: var(--card);
+  border:1px solid var(--border);
+  border-radius:1rem;
+  padding:1.8rem;
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:1.5rem;
+  align-items:start;
+  transition: border-color 0.2s;
+}
+
+.exp-card:hover { border-color: rgba(0,201,167,0.4); }
+
+.exp-dot {
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  background: var(--accent);
+  margin-top:6px;
+  flex-shrink:0;
+  box-shadow: 0 0 12px rgba(0,201,167,0.5);
+}
+
+.exp-role {
+  font-weight:700;
+  font-size:1rem;
+  margin-bottom:0.2rem;
+}
+
+.exp-company {
+  color: var(--accent);
+  font-family:'JetBrains Mono', monospace;
+  font-size:0.75rem;
+  letter-spacing:0.06em;
+  margin-bottom:0.6rem;
+}
+
+.exp-date {
+  font-size:0.75rem;
+  color: var(--muted);
+  margin-bottom:0.8rem;
+}
+
+.exp-desc {
+  color: #7a9ab8;
+  font-size:0.85rem;
+  line-height:1.7;
+  font-weight:400;
+}
+
+.exp-tags {
+  display:flex;
+  flex-wrap:wrap;
+  gap:0.4rem;
+  margin-top:0.8rem;
+}
+
+.exp-tag {
+  background: rgba(0,201,167,0.08);
+  border:1px solid rgba(0,201,167,0.2);
+  color: var(--accent);
+  font-family:'JetBrains Mono', monospace;
+  font-size:0.65rem;
+  padding:0.2rem 0.6rem;
+  border-radius:0.3rem;
+  letter-spacing:0.04em;
+}
+
+/* PROJECTS */
+.proj-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
+  gap:1.2rem;
+}
+
+.proj-card {
+  background: var(--card);
+  border:1px solid var(--border);
+  border-radius:1rem;
+  padding:1.8rem;
+  display:flex;
+  flex-direction:column;
+  transition: all 0.25s;
+  position:relative;
+  overflow:hidden;
+}
+
+.proj-card::before {
+  content:'';
+  position:absolute;
+  top:0; left:0; right:0;
+  height:2px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  opacity:0;
+  transition: opacity 0.2s;
+}
+
+.proj-card:hover {
+  border-color: rgba(0,201,167,0.3);
+  transform:translateY(-4px);
+}
+
+.proj-card:hover::before { opacity:1; }
+
+.proj-icon { font-size:1.8rem; margin-bottom:1rem; }
+
+.proj-name {
+  font-weight:700;
+  font-size:1rem;
+  margin-bottom:0.5rem;
+}
+
+.proj-desc {
+  color: #7a9ab8;
+  font-size:0.83rem;
+  line-height:1.65;
+  font-weight:400;
+  flex:1;
+  margin-bottom:1rem;
+}
+
+.proj-stack {
+  display:flex;
+  flex-wrap:wrap;
+  gap:0.35rem;
+  margin-bottom:1rem;
+}
+
+.proj-tech {
+  background: var(--surface);
+  border:1px solid var(--border);
+  color: var(--muted);
+  font-family:'JetBrains Mono', monospace;
+  font-size:0.62rem;
+  padding:0.15rem 0.5rem;
+  border-radius:0.25rem;
+}
+
+.proj-link {
+  color: var(--accent);
+  font-size:0.8rem;
+  font-weight:700;
+  text-decoration:none;
+  letter-spacing:0.04em;
+  display:flex;
+  align-items:center;
+  gap:0.3rem;
+}
+
+.proj-link:hover { text-decoration:underline; }
+
+/* CONTACT */
+.contact-wrap {
+  max-width:600px;
+  margin:0 auto;
+  text-align:center;
+}
+
+.contact-wrap p {
+  color: var(--muted);
+  font-size:0.95rem;
+  line-height:1.7;
+  margin-bottom:2.5rem;
+}
+
+.contact-links {
+  display:flex;
+  justify-content:center;
+  gap:1rem;
+  flex-wrap:wrap;
+}
+
+.contact-link {
+  background: var(--card);
+  border:1px solid var(--border);
+  color: var(--text);
+  text-decoration:none;
+  padding:0.8rem 1.5rem;
+  border-radius:0.6rem;
+  font-weight:700;
+  font-size:0.85rem;
+  display:flex;
+  align-items:center;
+  gap:0.5rem;
+  transition: all 0.2s;
+}
+
+.contact-link:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform:translateY(-2px);
+}
+
+/* FOOTER */
+footer {
+  text-align:center;
+  padding:2rem;
+  border-top:1px solid var(--border);
+  color: var(--muted);
+  font-size:0.8rem;
+  position:relative;
+  z-index:1;
+}
+
+footer span { color: var(--accent); }
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(24px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* RESPONSIVE */
+@media(max-width:768px) {
+  nav { padding:1rem 1.5rem; }
+  .nav-links { display:none; }
+  .hero { padding:7rem 1.5rem 3rem; }
+  section { padding:4rem 1.5rem; }
+  .about-grid { grid-template-columns:1fr; }
+  .hero-badge { display:none; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">ZK.</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag">// Available for opportunities in Bengaluru</div>
+  <h1>
+    <span class="outline">ZOYA</span><br>
+    <span class="highlight">QURU</span>
+  </h1>
+  <p class="hero-sub">Computer Science Engineering student & aspiring Data Analyst. I build Python-powered dashboards, web applications, and hardware-integrated systems.</p>
+  <div class="hero-btns">
+    <a href="#projects" class="btn btn-primary">View My Projects</a>
+    <a href="#contact" class="btn btn-outline">Get In Touch</a>
+  </div>
+  <div class="hero-badge">
+    <div class="hero-badge-num">2+</div>
+    <div class="hero-badge-label">Internships</div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" style="background:var(--surface);">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2 class="section-title">About Me</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>I'm <strong>Zoya Quru</strong>, a final-year Diploma student in Computer Science Engineering at TMAES Polytechnic College, Hospet. Currently based in <strong>Bengaluru</strong> and actively looking for entry-level opportunities in Data Analytics, Web Development, and Manufacturing Tech.</p>
+      <p>I love turning raw data into meaningful insights and building real systems that solve real problems — from fingerprint-based attendance systems to web dashboards.</p>
+      <p>I hold a <strong>CS50 AI with Python</strong> certification from Harvard (via edX) and am constantly learning new tools and technologies.</p>
+    </div>
+    <div>
+      <div class="info-list">
+        <div class="info-item">
+          <span class="info-label">Degree</span>
+          <span class="info-val">Diploma in CS Engineering</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">College</span>
+          <span class="info-val">TMAES Polytechnic, Hospet</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Location</span>
+          <span class="info-val">Bengaluru, Karnataka</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Cert</span>
+          <span class="info-val">CS50 AI with Python — Harvard/edX</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Status</span>
+          <span class="info-val">Open to Work ✅</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">GitHub</span>
+          <span class="info-val">github.com/zoyaquru2007</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Skills</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-card"><div class="skill-icon">🐍</div><div class="skill-name">Python</div><div class="skill-level">Intermediate</div></div>
+    <div class="skill-card"><div class="skill-icon">🗄️</div><div class="skill-name">MySQL</div><div class="skill-level">Intermediate</div></div>
+    <div class="skill-card"><div class="skill-icon">☕</div><div class="skill-name">Java</div><div class="skill-level">Beginner</div></div>
+    <div class="skill-card"><div class="skill-icon">⚛️</div><div class="skill-name">React JS</div><div class="skill-level">Beginner</div></div>
+    <div class="skill-card"><div class="skill-icon">🌐</div><div class="skill-name">HTML/CSS</div><div class="skill-level">Intermediate</div></div>
+    <div class="skill-card"><div class="skill-icon">📊</div><div class="skill-name">MS Excel</div><div class="skill-level">Intermediate</div></div>
+    <div class="skill-card"><div class="skill-icon">🤖</div><div class="skill-name">AI/ML Basics</div><div class="skill-level">Learning</div></div>
+    <div class="skill-card"><div class="skill-icon">📈</div><div class="skill-name">Data Analytics</div><div class="skill-level">Learning</div></div>
+    <div class="skill-card"><div class="skill-icon">🔧</div><div class="skill-name">Arduino</div><div class="skill-level">Intermediate</div></div>
+    <div class="skill-card"><div class="skill-icon">🐙</div><div class="skill-name">GitHub</div><div class="skill-level">Learning</div></div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" style="background:var(--surface);">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Experience</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="exp-list">
+
+    <div class="exp-card">
+      <div class="exp-dot"></div>
+      <div>
+        <div class="exp-role">Junior Web Designer Intern</div>
+        <div class="exp-company">YuvaIntern (Virtual)</div>
+        <div class="exp-date">2025 — Present · 5 Weeks</div>
+        <div class="exp-desc">Completed UI/UX wireframing tasks for a fictional tech company (NexaTech). Built interactive HTML wireframes and wrote project documentation. Gaining hands-on web design experience.</div>
+        <div class="exp-tags">
+          <span class="exp-tag">HTML</span>
+          <span class="exp-tag">UI/UX</span>
+          <span class="exp-tag">Wireframing</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-card">
+      <div class="exp-dot"></div>
+      <div>
+        <div class="exp-role">Manufacturing Intern</div>
+        <div class="exp-company">Foxconn — Bangalore</div>
+        <div class="exp-date">2024</div>
+        <div class="exp-desc">Worked in a high-volume electronics manufacturing environment at Foxconn's Bangalore facility. Gained practical experience in production processes, quality control, and manufacturing operations for electronic devices.</div>
+        <div class="exp-tags">
+          <span class="exp-tag">Manufacturing</span>
+          <span class="exp-tag">Quality Control</span>
+          <span class="exp-tag">Electronics</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-card">
+      <div class="exp-dot"></div>
+      <div>
+        <div class="exp-role">Software Development Intern</div>
+        <div class="exp-company">VV Technologies</div>
+        <div class="exp-date">2024 · Supervisor: Mr. Arun Kumar S (Division Head)</div>
+        <div class="exp-desc">Built a Personnel Resource Management System (PRS) — a full-stack attendance and access control system using dual authentication (RFID + Fingerprint). Integrated hardware sensors with web dashboard.</div>
+        <div class="exp-tags">
+          <span class="exp-tag">React JS</span>
+          <span class="exp-tag">Python</span>
+          <span class="exp-tag">MySQL</span>
+          <span class="exp-tag">Arduino</span>
+          <span class="exp-tag">RFID</span>
+          <span class="exp-tag">Fingerprint Sensor</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2 class="section-title">Projects</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="proj-grid">
+
+    <div class="proj-card">
+      <div class="proj-icon">🔐</div>
+      <div class="proj-name">Personnel Resource Management System</div>
+      <div class="proj-desc">Dual-authentication attendance system using RFID Reader + R307 Fingerprint Sensor, LCD Display, and Servo Motor. Web dashboard built with React JS and Python backend with MySQL database.</div>
+      <div class="proj-stack">
+        <span class="proj-tech">React JS</span>
+        <span class="proj-tech">Python</span>
+        <span class="proj-tech">MySQL</span>
+        <span class="proj-tech">Arduino</span>
+        <span class="proj-tech">RFID</span>
+      </div>
+      <a href="https://github.com/zoyaquru2007" class="proj-link">→ View on GitHub</a>
+    </div>
+
+    <div class="proj-card">
+      <div class="proj-icon">📊</div>
+      <div class="proj-name">Sales Analytics Dashboard</div>
+      <div class="proj-desc">Interactive data analytics dashboard built with Python, Pandas and Streamlit. Analyzes sales data with charts showing trends, top products, and category-wise performance.</div>
+      <div class="proj-stack">
+        <span class="proj-tech">Python</span>
+        <span class="proj-tech">Pandas</span>
+        <span class="proj-tech">Streamlit</span>
+        <span class="proj-tech">Matplotlib</span>
+      </div>
+      <a href="https://github.com/zoyaquru2007" class="proj-link">→ Coming Soon</a>
+    </div>
+
+    <div class="proj-card">
+      <div class="proj-icon">🌐</div>
+      <div class="proj-name">Portfolio Website</div>
+      <div class="proj-desc">This website! Built with pure HTML and CSS, hosted on GitHub Pages for free. Showcases my skills, experience, and projects to potential employers.</div>
+      <div class="proj-stack">
+        <span class="proj-tech">HTML</span>
+        <span class="proj-tech">CSS</span>
+        <span class="proj-tech">GitHub Pages</span>
+      </div>
+      <a href="https://github.com/zoyaquru2007/zoyu7github.io" class="proj-link">→ View Source</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" style="background:var(--surface);">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2 class="section-title">Contact</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="contact-wrap">
+    <p>I'm actively looking for entry-level opportunities in Bengaluru — Data Analytics, Web Development, or Manufacturing Tech roles. Feel free to reach out!</p>
+    <div class="contact-links">
+      <a href="https://github.com/zoyaquru2007" class="contact-link">🐙 GitHub</a>
+      <a hr
